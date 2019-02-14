@@ -1,0 +1,74 @@
+
+#=============================== 
+# Spring Configuration
+# =============================== 
+spring:
+ #===============================
+# Rabbit MQ configuration
+# =============================== 
+ cloud:
+  stream:
+    bindings:
+      emailInput:
+        destination: mail
+        group: mails-group
+        durableSubscription: true
+ datasource:
+    platform: mysql
+    #url: "jdbc:mysql://steereserver:3306/steere?autoReconnect=true&useSSL=false"
+    url: "jdbc:mysql://localhost:3306/steere?autoReconnect=true&useSSL=false"
+    username: steere
+    password: "!Q2w3e$R"
+    initialization-mode: always
+# ===============================    
+# Hibernate ddl auto (create, create-drop, validate, update)
+# =============================== 
+ jpa:
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+ queries:
+    users-query: select email, password, active from employee where email=?
+    roles-query: select e.email, r.role from employee e inner join employee_role er on(e.employee_id=er.employee_id) inner join role r on(er.role_id=r.role_id) where e.email=?
+# =============================== 
+# Mail Configuration 
+# =============================== 
+ mail:
+  host: smtp.gmail.com
+  port: 587
+  username: john.cinq-mars@steereengineering.com
+  password: "2Bornot2b!"
+  properties:
+   mail: 
+    smtp:
+     starttls:
+      enable: true
+      required: true
+      auth: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
+#===============================
+# Thymeleaf Configurations
+# =============================== 
+ thymeleaf:
+    cache: false       
+# ===============================          
+# Logging Configuration
+# ===============================        
+logging:
+  level:
+    root: ERROR
+    org.springframework.web: info
+    org.springframework.security: info
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql: debug
+# ===============================          
+# Application Configuration
+# ===============================  
+application:
+  host: localhost
+  port: 8080
+server:
+  servlet:
+    context-path: /
